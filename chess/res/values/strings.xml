@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">中国象棋</string>
+    <string name="action_settings">设置</string>
+    <string name="sound">开启音乐</string>
+
+</resources>
