@@ -47,7 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	int currentChessmanStartPositionX, currentChessmanStartPositionY; 
 	int currentChessmanEndPositionX, currentCHessmanEndPositionY;
 	
-	int status = 1;					// 游戏状态。0游戏中，1胜利, 2失败
+	int status = 0;					// 游戏状态。0游戏中，1胜利, 2失败
 	int blackTime = 0;				// 黑方总共思考时间
 	int redTime = 0;				// 红方总共思考时间
 	
@@ -149,47 +149,49 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		canvas.drawColor(Color.WHITE);
-		canvas.drawBitmap(chessboardBmp, 10, 10, null);
+		int chessboardLeft = getChessboardLeft();
+		int chessboardTop = getChessboardTop();
+		canvas.drawBitmap(chessboardBmp, chessboardLeft, chessboardTop, null);
 		
 		for (int i = 0; i < chessman.length; i++) {
 			for (int j = 0; j < chessman[i].length; j++) {
 				if (chessman[i][j] != 0) {
-					canvas.drawBitmap(chessmanBackgroundBmp, 9+j*34, 10+i*35, null);
+					canvas.drawBitmap(chessmanBackgroundBmp, chessboardLeft-1+j*34, chessboardTop+i*35, null);
 					if(chessman[i][j] == 1){//为黑帅时
-						canvas.drawBitmap(blackChessman[0], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[0], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 2){//为黑车时
-						canvas.drawBitmap(blackChessman[1], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[1], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 3){//为黑马时
-						canvas.drawBitmap(blackChessman[2], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[2], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 4){//为黑炮时
-						canvas.drawBitmap(blackChessman[3], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[3], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 5){//为黑士时
-						canvas.drawBitmap(blackChessman[4], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[4], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 6){//为黑象时
-						canvas.drawBitmap(blackChessman[5], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[5], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 7){//为黑兵时
-						canvas.drawBitmap(blackChessman[6], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(blackChessman[6], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 8){//为红将时
-						canvas.drawBitmap(redChessman[0], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[0], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 9){//为红车时
-						canvas.drawBitmap(redChessman[1], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[1], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 10){//为红马时
-						canvas.drawBitmap(redChessman[2], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[2], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 11){//为红砲时
-						canvas.drawBitmap(redChessman[3], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[3], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 12){//为红仕时
-						canvas.drawBitmap(redChessman[4], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[4], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 13){//为红相时
-						canvas.drawBitmap(redChessman[5], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[5], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					} else if(chessman[i][j] == 14){//为红卒时
-						canvas.drawBitmap(redChessman[6], 12+j*34, 13+i*35, paint);
+						canvas.drawBitmap(redChessman[6], chessboardLeft+2+j*34, chessboardTop+3+i*35, paint);
 					}
 				}
 			}
 		}
 		
-		canvas.drawBitmap(vsBmp, 10, 360, paint);
-		canvas.drawBitmap(timeBmp, 81, 411, paint);
+		canvas.drawBitmap(vsBmp, (width-vsBmp.getWidth())/2, chessboardTop+chessboardBmp.getHeight()+10, paint);
+		canvas.drawBitmap(timeBmp, (width-vsBmp.getWidth())/2+71, chessboardTop+chessboardBmp.getHeight()+61, paint);
 		
 		// 绘制黑方的时间
 		int tmp = this.blackTime/60;
@@ -199,7 +201,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		for (int i = 0; i< 2; i++) {
 			int tmpScore = timeStr.charAt(i) - '0';
-			canvas.drawBitmap(number[tmpScore], 65+i*7, 412, paint);
+			canvas.drawBitmap(number[tmpScore], (width-vsBmp.getWidth())/2+55+i*7, chessboardTop+chessboardBmp.getHeight()+62, paint);
 		}
 		
 		tmp = this.blackTime%60;
@@ -209,7 +211,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		for (int i = 0; i< 2; i++) {
 			int tmpScore = timeStr.charAt(i) - '0';
-			canvas.drawBitmap(number[tmpScore], 85+i*7, 412, paint);
+			canvas.drawBitmap(number[tmpScore], (width-vsBmp.getWidth())/2+75+i*7, chessboardTop+chessboardBmp.getHeight()+62, paint);
 		}
 		
 		// 开始绘制红方时间
@@ -221,7 +223,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		for (int i = 0; i< 2; i++) {
 			int tmpScore = timeStr.charAt(i) - '0';
-			canvas.drawBitmap(redNumber[tmpScore], 247+i*7, 411, paint);
+			canvas.drawBitmap(redNumber[tmpScore], (width-vsBmp.getWidth())/2+232+i*7, chessboardTop+chessboardBmp.getHeight()+62, paint);
 		}
 		
 		tmp = this.blackTime%60;
@@ -231,20 +233,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		for (int i = 0; i< 2; i++) {
 			int tmpScore = timeStr.charAt(i) - '0';
-			canvas.drawBitmap(redNumber[tmpScore], 267+i*7, 411, paint);
+			canvas.drawBitmap(redNumber[tmpScore], (width-vsBmp.getWidth())/2+252+i*7, chessboardTop+chessboardBmp.getHeight()+62, paint);
 		}
 		
 		// 绘制指向走棋一方的指针
 		if (caiPan == true) {
-			canvas.drawBitmap(rightPointerBmp, 155, 420, paint);
+			canvas.drawBitmap(rightPointerBmp, chessboardLeft+145, chessboardTop+chessboardBmp.getHeight()+80, paint);
 		} else {
-			canvas.drawBitmap(leftPointerBmp, 120, 420, paint);
+			canvas.drawBitmap(leftPointerBmp, chessboardLeft+110, chessboardTop+chessboardBmp.getHeight()+80, paint);
 		}
 
-		canvas.drawBitmap(currentBmp, (width-currentBmp.getWidth())/2, (height-currentBmp.getHeight())/2+200, paint);
+		canvas.drawBitmap(currentBmp, (width-currentBmp.getWidth())/2, chessboardTop+chessboardBmp.getHeight()+110, paint);
 		canvas.drawBitmap(sound2Bmp, 10, getSound2Top(), paint);
 		if (activity.isSound) {
-			canvas.drawBitmap(sound3Bmp, 80, getSound2Top(), paint);
+			canvas.drawBitmap(sound3Bmp, 80, getSound2Top()+10, paint);
 		}
 		
 		canvas.drawBitmap(exit2Bmp, (width-exit2Bmp.getWidth()-10), getExit2Top(), paint);
@@ -279,6 +281,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 			if (event.getX()>(width-exit2Bmp.getWidth()-10) && event.getX()<(width-10) 
 					&& event.getY()>getExit2Top() 
 					&& event.getY()<getExit2Top()+exit2Bmp.getHeight()) {
+				activity.gamesound.stop();
 				activity.handler.sendEmptyMessage(1);
 			}
 		}
@@ -295,11 +298,55 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					&& event.getY()<getOkBmpTop(lostBmp)+okBmp.getHeight()) {
 				activity.handler.sendEmptyMessage(1);
 			}
-		} else {
-			
+		} else if (status == 0) {
+			if (event.getX()>getChessboardLeft() 
+					&& event.getX()<(getChessboardLeft()+chessboardBmp.getWidth())
+					&& event.getY()>getChessboardTop() 
+					&& event.getY()<(getChessboardTop()+chessboardBmp.getHeight())) {
+				if (caiPan == true) {	// 如果是该玩家走棋
+					int[] pos = getPos(event);
+					int i = pos[0];
+					int j = pos[1];
+					if (!focus) {
+						if (chessman[i][j] != 0 && chessman[i][j] > 7) {
+							selectChessman = chessman[i][j];
+							focus = true;
+							currentChessmanStartPositionX = i;
+							currentChessmanStartPositionY = j;
+						}
+					} else {
+						if (chessman[i][j] != 0) {
+							if (chessman[i][j] > 7) { // 点击的是自己的棋子
+								selectChessman = chessman[i][j];
+								currentChessmanStartPositionX = i;
+								currentChessmanStartPositionY = j;
+							} else { // 如果是对方的棋子
+								currentChessmanEndPositionX = i;
+								currentCHessmanEndPositionY = j;
+								boolean canMove = true;
+
+							}
+						}
+					}
+				}
+			}
 		}
 		
 		return super.onTouchEvent(event);
+	}
+
+	private int[] getPos(MotionEvent event) {
+		int pos[] = new int[2];
+		double x = event.getX();
+		double y = event.getY();
+		if (x>getChessboardLeft() && x<getChessboardLeft()+chessboardBmp.getWidth() && y>getChessboardTop() && y<getChessboardTop()+chessboardBmp.getHeight()) {
+			pos[0] = Math.round((float)((y-21)/36));
+			pos[1] = Math.round((float)((x-21)/35));
+		} else {
+			pos[0] = -1;
+			pos[1] = -1;
+		}
+		return pos;
 	}
 
 	private int getOkBmpTop(Bitmap bmp) {
@@ -307,11 +354,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private int getSound2Top() {
-		return (height-sound2Bmp.getHeight())/2+200;
+		return getChessboardTop()+chessboardBmp.getHeight()+110;
 	}
 
 	private int getExit2Top() {
-		return (height-exit2Bmp.getHeight())/2+200;
+		return getSound2Top();
+	}
+	
+	private int getChessboardLeft() {
+		return (width-chessboardBmp.getWidth())/2;
+	}
+
+	private int getChessboardTop() {
+		return (height-chessboardBmp.getHeight())/2;
 	}
 	
 	@Override

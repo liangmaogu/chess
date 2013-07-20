@@ -35,12 +35,20 @@ public class MainActivity extends Activity {
 		
 		gamesound = MediaPlayer.create(this, R.raw.gamesound);
 		gamesound.setLooping(true);
+		
 		initWelcomeView();
 	}
 	
 	private void initWelcomeView() {
 		setContentView(R.layout.activity_main);
+		
+		if (gamesound != null) {
+			gamesound.stop();
+			gamesound = null;
+		}
+		
 		if (isSound) {
+			
 			startSound.start();
 		}
 		initBtn();
@@ -53,6 +61,7 @@ public class MainActivity extends Activity {
 		}
 		
 		if (isSound) {
+			
 			gamesound.start();
 		}
 		setContentView(new GameView(this, this));
